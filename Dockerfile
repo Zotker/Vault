@@ -1,14 +1,11 @@
-FROM ubuntu:focal
+FROM alpine:3.17.0
 MAINTAINER Georgy Bogomolov
 LABEL Cheap file-server
 
-COPY config /tmp
-
-RUN apt update && apt install -y nginx && apt clean && rm -rf /var/cache/apt/archives /var/lib/apt/lists/* && \
-	mkdir -p var/www/files/ && \
-	cp /tmp/default /etc/nginx/sites-available && \
-	rm /tmp/default
-
+RUN apk update && apk add nginx && apk del && rm /var/cache/apk/* && \
+	mkdir /var/www/files
+	
+COPY config/default /etc/nginx/http.d/default.conf
 
 EXPOSE 80 443
 
